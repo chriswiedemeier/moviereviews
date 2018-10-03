@@ -6,6 +6,10 @@
         <link rel="stylesheet" type="text/css" href="main.css">
     </head>
     
+    <script
+      src="http://code.jquery.com/jquery-3.2.1.min.js">
+    </script>
+    
     <body>
         <div class="center">
       
@@ -33,9 +37,36 @@
         <script>
           //API key 4b1b1f52 (Open movie database!)
           //http://www.omdbapi.com/?apikey=[yourkey]&
+          
+          //320983-MovieRev-QR0H5EMD
+          //tastedive
+          //https://tastedive.com/api/similar?q=red+hot+chili+peppers%2C+pulp+fiction
             
             $(document).ready(function() {
                 
+                
+                
+                
+                $("#movieButton").click(function(e){
+                    var movie = $("#movieField").val();
+                   // movie = movie.replace(/ /g, '+');
+                    //https://tastedive.com/api/similar?q=red+hot+chili+peppers%2C+pulp+fiction
+                    //var myurl= "https://tastedive.com/320983-MovieRev-QR0H5EMD/similar?q=";
+                    
+                    var myurl= "https://tastedive.com/api/similar?q=movie:"
+                    myurl += movie;
+                    //myurl += "&type=movies&k=320983-MovieRev-QR0H5EMD";
+                      
+                    console.log(movie);
+                    console.log(myurl);
+                    e.preventDefault();
+                    
+                     $.getJSON(myurl,function(data) {
+                        
+                        console.log(JSON.stringify(data));
+                    })
+                    
+                });
                     
             });
          
