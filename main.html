@@ -7,95 +7,35 @@
     </head>
     
     <body>
+        <div class="center">
+      
         
-        <h1>Film Reviews</h1>
-        
-        <p>See popular review for any movie IN THE WORLD!</p>
-        
-         <form>
-            Enter a movie title to begin: <input type="text" id="movieField" value=""><br>
-            Suggested Titles: <span id="txtHint">Empty</span>
-            <input id="movieButton" type="submit" value="Submit">
-        </form>
-        
-        <div>
-            <p>Review</p>
-            <textarea id="displayReview"></textarea>
+            <h1 style="text-align: center;">Film Reviews</h1>
+            
+            <p>See popular review for any movie IN THE WORLD!</p>
+            
+             <form>
+                Enter a movie title to begin: <input type="text" id="movieField" value=""><br>
+                Suggested Titles: <span id="txtHint">Empty</span>
+                <input id="movieButton" type="submit" value="Submit">
+            </form>
+            
+            <div>
+                <p>Review</p>
+                <textarea id="displayReview">
+                    
+                    
+                </textarea>
+            </div>
+    
         </div>
     
-    
-    
         <script>
+          //API key 4b1b1f52 (Open movie database!)
+          //http://www.omdbapi.com/?apikey=[yourkey]&
             
             $(document).ready(function() {
                 
-                
-                $("#movieButton").click(function(e){
-                    var value = $("#movieField").val();
-                    
-                    var myurl= "https://api.openweathermap.org/data/2.5/weather?units=imperial&appid=3224934a34fa83288a38cc3bb4bf53a1&q=";
-                    myurl += value;
-                      
-                    console.log(value);
-                    e.preventDefault();
-                    $("#displayCity").text(value);
-                    
-                     $.getJSON(myurl,function(data) {
-                        var everything;
-                        everything = "<ul>";
-                        $.each(data, function(i,item) {
-                          everything += "<li> "+data[i].city;
-                        });
-                        everything += "</ul>";
-                    })
-                    
-                      console.log(myurl);
-                      $.ajax({
-                        url : myurl,
-                        dataType : "json",
-                            success : function(parsed_json) {
-                                var location = parsed_json['name'];
-                                var weather = parsed_json['weather'][0]['main'];
-                                var temp = parsed_json['main']['temp'];
-                                var weather_icon = parsed_json['weather'][0]['icon'];
-                                var humidity = parsed_json['main']['humidity'];
-                                var temp_min = parsed_json['main']['temp_min'];
-                                var temp_max = parsed_json['main']['temp_max'];
-                                var wind_speed = parsed_json['wind']['speed'];
-                                everything = "<img src=\"http://openweathermap.org/img/w/" + weather_icon + ".png\"/>"
-                                everything += "<ul>";
-                                everything += "<li>Location: " + location;
-                                everything += "<li>Weather: " + weather + " (" + temp + "&#8457;)";
-                                everything += "<li>Low: " + temp_min + "&#8457; | High: " + temp_max + "&#8457;";
-                                everything += "<li>Humidity: " + humidity + "%";
-                                everything += "<li>Wind: " + wind_speed + " mph";
-                                everything += "</ul>";
-                                $("#weather").html(everything);
-                            }
-                      });
-                });
-                 
-                 
-                $( "#movieField" ).keyup(function() {
-                    var url = "http://bioresearch.byu.edu/cs260/jquery/getcity.cgi?q="+$("#cityField").val();
-        
-                    $.getJSON(url,function(data) {
-                        var suggestions;
-                        suggestions = "<ul>";
-                        $.each(data, function(i,item) {
-                          suggestions += "<li> "+data[i].city;
-                        });
-                        suggestions += "</ul>";
-                        $("#txtHint").html(suggestions);
-                    })
-                    .done(function() { console.log('getJSON request (keyup) succeeded!'); })
-                    .fail(function(jqXHR, textStatus, errorThrown) { 
-                        console.log('getJSON request failed! ' + textStatus); 
-                        console.log("incoming "+jqXHR.responseText);
-                    })
-                    .always(function() { console.log('getJSON request (keyup) ended!');
-                    });
-                });
                     
             });
          
