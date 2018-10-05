@@ -11,26 +11,22 @@
     </script>
     
     <body>
-        <div class="center">
+        <div id="main" class="center">
       
         
-            <h1 style="text-align: center;">Film Reviews</h1>
+       
+        <h1 style="text-align: center;">Film Reviews</h1>
+        
+        <div id="console" class="center" style="margin-bottom: 20px; border: 5px solid #008ab9;" >
             
-            <p>See popular review for any movie IN THE WORLD!</p>
+            <p>Compare movies and their reviews side-by-side.</p>
             
-             <form>
-                Enter a movie title to begin: <input type="text" id="movieField" value=""><br>
-                Suggested Titles: <span id="txtHint">Empty</span>
+             <form >
+                Enter a movie title: <input type="text" id="movieField" value=""><br>
                 <input id="movieButton" type="submit" value="Submit">
             </form>
+        </div>
             
-            <div>
-                <p>Review</p>
-                <textarea id="displayReview">
-                    
-                    
-                </textarea>
-            </div>
     
         </div>
     
@@ -53,18 +49,129 @@
                     //https://tastedive.com/api/similar?q=red+hot+chili+peppers%2C+pulp+fiction
                     //var myurl= "https://tastedive.com/320983-MovieRev-QR0H5EMD/similar?q=";
                     
-                    var myurl= "https://tastedive.com/api/similar?q=movie:"
+                    var myurl= "https://cors.io/?https://tastedive.com/api/similar?q=movie:"
                     myurl += movie;
-                    //myurl += "&type=movies&k=320983-MovieRev-QR0H5EMD";
+                    myurl += "&type=movies&api_key=320983-MovieRev-ZBCRVOOX";
+                    
+                    var opendataurl= "http://www.omdbapi.com/?t=";
+                    opendataurl += movie;
+                    opendataurl+= "&apikey=4b1b1f52";
+                    //&plot=short&type=movie
+                      
                       
                     console.log(movie);
-                    console.log(myurl);
+                   // console.log(myurl);
+                    console.log(opendataurl);
                     e.preventDefault();
                     
-                     $.getJSON(myurl,function(data) {
+                    
+                     $.getJSON(opendataurl,function(data) {
+                         console.log("Open movie database: "+JSON.stringify(data));
                         
-                        console.log(JSON.stringify(data));
-                    })
+                         
+                         /*Open movie database: {
+                         "Title":"TRON",
+                         "Year":"1982",
+                         "Rated":"PG",
+                         "Released":"09 Jul 1982",
+                         "Runtime":"96 min",
+                         "Genre":"Action, Adventure, Sci-Fi",
+                         "Director":"Steven Lisberger",
+                         "Writer":"Steven Lisberger (screenplay), Steven Lisberger (story), Bonnie MacBird (story)","Actors":"Jeff Bridges, Bruce Boxleitner, David Warner, Cindy Morgan",
+                         "Plot":"A computer hacker is abducted into the digital world and forced to participate in gladiatorial games where his only chance of escape is with the help of a heroic security program.",
+                         "Language":"English",
+                         "Country":"USA",
+                         "Awards":"Nominated for 2 Oscars. Another 2 wins & 6 nominations.",
+                         "Poster":"https://m.media-amazon.com/images/M/MV5BMzZhNjYyZDYtZmE4MC00M2RlLTlhOGItZDVkYTVlZTYxOWZlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_SX300.jpg",
+                         "Ratings":[
+                         {"Source":"Internet Movie Database","Value":"6.8/10"},
+                         {"Source":"Rotten Tomatoes","Value":"70%"},
+                         {"Source":"Metacritic","Value":"58/100"}],
+                         "Metascore":"58",
+                         "imdbRating":"6.8",
+                         "imdbVotes":"103,301",
+                         "imdbID":"tt0084827",
+                         "Type":"movie",
+                         "DVD":"15 Jan 2002",
+                         "BoxOffice":"N/A",
+                         "Production":"Buena Vista Pictures",
+                         "Website":"N/A",
+                         "Response":"True"} main.html:73:26*/
+                         
+                         var title = data.Title;
+                         var year = data.Year;
+                         var rating = data.Rated;
+                         var genre = data.Genre;
+                         var director = data.Director;
+                         var plot = data.Plot;
+                         var metascore = data.Metascore;
+                         var imbdRating = data.imbdRating;
+                         var rottenRating = data.Ratings[1].Value;
+                         var metacriticRating = data.Ratings[2].Value;
+                         
+                         
+                         var summary;
+                         summary = "<div class=\"movie\"><h3>" + title;
+                         summary+= "</h3>Director: " + director;
+                         summary+= "<br>Release Year: " + year;
+                         summary+= "<br>Rating: " + rating;
+                         summary+= "<br>Genre: " + genre;
+                         summary+= "<br><br>Plot: " + plot;
+                         summary+= "<br><br>- Reviews -<br>";
+                         summary+="<ul>";
+                         if (metascore!=null){
+                              summary+="<li>Metascore: "+metascore+"</li>";
+                         }
+                         if (imbdRating!=null){
+                               summary+="<li>IMBD Rating: "+imbdRating+"</li>";
+                         }
+                         if (rottenRating!=null){
+                              summary+="<li>Rotten Tomatoes: "+rottenRating+"</li>";
+                         }
+                          if (metacriticRating!=null){
+                               summary+="<li>Metacritic: "+metacriticRating+"</li>";
+                         }
+                        
+                        
+                         
+                        
+                         summary+="</ul></div>";
+                         
+                         //console.log(summary);
+                          //$("#main").append(summary);
+                           $(summary).insertAfter("#console");
+                         
+                     });
+                    
+                    
+                    
+                     /*$.getJSON(myurl,function(data) {
+                        
+                        console.log("Tastedive database: "+JSON.stringify(data));
+                        
+                        var recommendations;
+                        
+                        recommendations = 
+                        "<div>Movie: "
+                        +JSON.stringify(data.Similar.Info[0].Name);
+                        
+                        
+                        console.log("Name of movie: "+ data.Similar.Info[0].Name);
+                        recommendations += "<ul>";
+                        
+                        
+                        recommendations += "<li>"
+                        recommendatoins += "TEST ITEM";
+                        
+                        
+                        recommendations += "</li>";
+                        recommendations += "</ul>";
+                        
+                        recommendations+="</div>";
+                        
+                        $("#displayReview").append(recommendations);
+                        
+                    });*/
                     
                 });
                     
